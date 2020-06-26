@@ -1,0 +1,21 @@
+@mixin no-radius() {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+@mixin textShadow($color) {
+  text-shadow: 0 0 2px $color;
+}
+
+@mixin boxShadow($color) {
+  box-shadow: 0 3px 6px $color;
+}
+
+@mixin gradient-bg($bg1, $bg2) {
+  background: $bg1;
+  background: -moz-linear-gradient(140deg, $bg1 0%, $bg1 50%);
+  background: -webkit-linear-gradient(140deg, $bg1 0%, $bg2 50%);
+  background: linear-gradient(140deg, $bg1 0%, $bg2 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$bg1,endColorstr=$bg2,GradientType=1);
+}
