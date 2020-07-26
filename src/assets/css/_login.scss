@@ -1,0 +1,47 @@
+.login{
+
+  ::placeholder{
+    color: $white
+  }
+  /*.login-bg {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url("../images/login-bg.jpg") no-repeat fixed;
+    background-size: cover;
+    filter: blur(20px) opacity(55%);
+  }*/
+
+  .card {
+    background: rgba(255,255,255,.3);
+  }
+
+  // text color
+  color: $white;
+
+  .form-control{
+    background: none;
+    @include no-border;
+    @include no-radius;
+    border-bottom: 1px $color3 solid;
+    color: $color5;
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .input-group-text {
+    background: none;
+    @include no-radius;
+    @include no-border;
+    color: $color5;
+  }
+
+  .btn {
+    @include no-border;
+    @include no-radius;
+  }
+}

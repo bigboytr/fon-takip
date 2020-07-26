@@ -3,6 +3,9 @@
   -moz-border-radius: 0;
   border-radius: 0;
 }
+@mixin no-border() {
+  border: none;
+}
 
 @mixin textShadow($color) {
   text-shadow: 0 0 2px $color;

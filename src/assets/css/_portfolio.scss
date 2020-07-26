@@ -1,0 +1,77 @@
+.portfolio-view {
+  .card {
+    //@include no-radius;
+    background-color: $color3;
+  }
+
+  .btn {
+    @include boxShadow($color1);
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &.btn-primary {
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+
+  .portfolio-list {
+
+    .fixed-width {
+      display: inline-block;
+      width: 80%;
+    }
+
+    .fundTitle {
+      position: absolute;
+      width: 250px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-top: -10px;
+    }
+
+    tbody {
+      td {
+        vertical-align: middle;
+      }
+    }
+
+    tfoot {
+      h6 {
+        font-weight: 700;
+      }
+    }
+
+
+  }
+
+
+  // second design
+  .portfolio-header {
+    background: $color2;
+    font-size: 1.2rem;
+  }
+  .portfolio-item {
+    text-align: center;
+
+    .long-title {
+      text-overflow: ellipsis;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    hr {
+      margin: .5rem 0 .5rem 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
