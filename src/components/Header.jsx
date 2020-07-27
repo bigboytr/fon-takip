@@ -12,6 +12,8 @@ class Header extends React.Component {
 
             <header className={'p-2'}>
                 <img src={Logo} alt="Fon"/>
+
+
             </header>
 
         )

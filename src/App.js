@@ -10,16 +10,17 @@ import {
 
 import AuthModule from "./controller/AuthModule";
 
-// Views
-import Header from './components/Header'
 
 // Components
+import Sidebar from "./components/Sidebar";
 import Portfolio from "./views/Portfolio";
 import Login from "./views/Login";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
 import {far} from '@fortawesome/free-regular-svg-icons'
+
+import { Container, Row, Col } from 'reactstrap'
 
 library.add(fas, far);
 
@@ -42,19 +43,24 @@ class App extends React.Component {
 
         return (
 
-            <div className="container-fluid m-0 p-0">
-                {isLogged &&
-                <Header/>
-                }
-                <Router>
-                    <Switch>
-                        <Route path={'/'} exact component={Login} />
-                        <Route path={'/login'} exact component={Login} />
-                        <Route path={'/portfolio'} exact component={Portfolio} />
-                        {/*<Redirect from="*" to="/" />*/}
-                    </Switch>
-                </Router>
-            </div>
+            <Container fluid>
+
+                <Row>
+                    <Sidebar />
+                    <Col className={'offset-2'}>
+
+                        <Router>
+                            <Switch>
+                                <Route path={'/'} exact component={Login} />
+                                <Route path={'/login'} exact component={Login} />
+                                <Route path={'/portfolio'} exact component={Portfolio} />
+                                {/*<Redirect from="*" to="/" />*/}
+                            </Switch>
+                        </Router>
+                    </Col>
+                </Row>
+
+            </Container>
 
         )
     }

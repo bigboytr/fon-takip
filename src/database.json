@@ -117,12 +117,6 @@
           "cost": 999.93
         },
         {
-          "code": "TPL",
-          "purchaseDate": "01.04.2020",
-          "purchasePrice": 2.132316,
-          "cost": 498.96
-        },
-        {
           "code": "TUA",
           "purchaseDate": "06.04.2020",
           "purchasePrice": 0.083752,
@@ -141,12 +135,6 @@
           "cost": 1499.90
         },
         {
-          "code": "TPL",
-          "purchaseDate": "30.04.2020",
-          "purchasePrice": 2.318672,
-          "cost": 1497.86
-        },
-        {
           "code": "TUA",
           "purchaseDate": "29.05.2020",
           "purchasePrice": 0.090194,
@@ -157,12 +145,6 @@
           "purchaseDate": "29.05.2020",
           "purchasePrice": 1.292309,
           "cost": 1499.08
-        },
-        {
-          "code": "TPL",
-          "purchaseDate": "24.06.2020",
-          "purchasePrice": 2.380473,
-          "cost": 999.8
         },
         {
           "code": "TYH",

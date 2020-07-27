@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Row, Col, Card, CardBody, Spinner, Button} from 'reactstrap'
+import {Container, Row, Col, Card, CardBody, Spinner, Button} from 'reactstrap'
 
 
 import data from '../database.json'
@@ -28,7 +28,9 @@ class Portfolio extends React.Component {
         //this.groupingPortfolio();
 
         this.getFundValues().then(r => {
-            this.setState({fundValues: r});
+            if (r) {
+                this.setState({fundValues: r});
+            }
             this.groupingPortfolio();
         })
     }
@@ -69,15 +71,17 @@ class Portfolio extends React.Component {
                 a.group[code].avgFundPrice = a.group[code].totalCost / a.group[code].totalQuantity;
 
                 // Anlık Değerler
-                const fundValue = this.state.fundValues.find(fund => {
-                    return fund.FonKodu === code
-                });
+                if (this.state.fundValues) {
+                    const fundValue = this.state.fundValues.find(fund => {
+                        return fund.FonKodu === code
+                    });
 
-                if (fundValue) {
+                    if (fundValue) {
 
-                    a.group[code].fundTitle = fundValue.FonUnvani
-                    a.group[code].price = fundValue.BirimPayDegeri
-                    a.group[code].priceDate = new Date(fundValue.Tarih).toLocaleDateString()
+                        a.group[code].fundTitle = fundValue.FonUnvani
+                        a.group[code].price = fundValue.BirimPayDegeri
+                        a.group[code].priceDate = new Date(fundValue.Tarih).toLocaleDateString()
+                    }
                 } else {
                     // if fund value not exist
                     a.group[code].fundTitle = ''
@@ -180,7 +184,7 @@ class Portfolio extends React.Component {
 
         return (
 
-            <section className={'container portfolio-view'}>
+            <Container className={'portfolio-view'}>
 
                 <Card className={'mt-2 mb-3'}>
                     <CardBody className={'p-2'}>
@@ -228,7 +232,7 @@ class Portfolio extends React.Component {
                 {(this.state.groupedPortfolio && this.state.gridView) &&
                     <GridView groupedPortfolio={this.state.groupedPortfolio} selectedDate={this.state.begin} />
                 }
-            </section>
+            </Container>
 
         )
     }
