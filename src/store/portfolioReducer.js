@@ -1,11 +1,20 @@
+import {SET_LIST} from "./portfolioActions";
 
 const initalState = {
-    user: null
+    list: null
 }
 
-const authReducer = (state = initalState, action) => {
+const PortfolioReducer = (state = initalState, action) => {
 
-    return state
+    switch (action.type) {
+
+        case SET_LIST: {
+            const {list} = action;
+            return {...state, list}
+        }
+
+        default: return state
+    }
 }
 
-export default authReducer
+export default PortfolioReducer

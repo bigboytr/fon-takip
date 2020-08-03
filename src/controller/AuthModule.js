@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import firebaseConfig from '../firebaseConfig';
 import store from "../store/store";
 import {setUser} from "../store/authActions";
+import { Redirect } from "react-router-dom";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -10,7 +11,6 @@ export default class AuthModule {
     constructor() {
         this.store = store;
     }
-
 
     login(state) {
 
@@ -42,6 +42,7 @@ export default class AuthModule {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
             this.setAuthentication(null);
+            Redirect('/portfolio')
 
         }).catch((errors) => {
 
@@ -55,24 +56,9 @@ export default class AuthModule {
 
         // refresh page function
 
-        /*return new Promise((res, rej) => {
-
-
-
-        })*/
         firebase.auth().onAuthStateChanged(user => {
 
             this.setAuthentication(user ? user : null)
-
-            /*this.setAuthentication(user ? {
-                email: user.email,
-                uid: user.uid,
-                token: true
-            } : {
-                email: null,
-                uid: null,
-                token: false
-            })*/
         });
     }
 
@@ -86,20 +72,5 @@ export default class AuthModule {
          */
 
         this.store.dispatch(setUser(user))
-
-        /*if (user) {
-            localStorage.setItem('userEmail', user.email);
-            localStorage.setItem('userId', user.uid);
-            localStorage.setItem('token', user.token);
-        } else {
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('token');
-        }*/
-
-        /*store.dispatch('setAuthUser', user);
-        store.dispatch('setToken', token);*/
-        //store.dispatch('setSelectedSite', site);
-
     }
 }

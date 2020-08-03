@@ -46,8 +46,10 @@ class App extends React.Component {
             <Container fluid>
 
                 <Row>
+                    {isLogged &&
                     <Sidebar />
-                    <Col className={'offset-2'}>
+                    }
+                    <Col className={ isLogged ? 'offset-2' : ''}>
 
                         <Router>
                             <Switch>

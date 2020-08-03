@@ -217,6 +217,12 @@
           "purchaseDate": "22.07.2020",
           "purchasePrice": 106.269066,
           "cost": 1168.96
+        },
+        {
+          "code": "TYH",
+          "purchaseDate": "29.07.2020",
+          "purchasePrice": 0.109398,
+          "cost": 999.90
         }
       ]
     }
