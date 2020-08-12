@@ -223,6 +223,24 @@
           "purchaseDate": "29.07.2020",
           "purchasePrice": 0.109398,
           "cost": 999.90
+        },
+        {
+          "code": "TE3",
+          "purchaseDate": "05.08.2020",
+          "purchasePrice": 5.367344,
+          "cost": 998.33
+        },
+        {
+          "code": "TPC",
+          "purchaseDate": "05.08.2020",
+          "purchasePrice": 1.518783,
+          "cost": 1998.72
+        },
+        {
+          "code": "TUA",
+          "purchaseDate": "07.08.2020",
+          "purchasePrice": 0.112313,
+          "cost": 2999.99
         }
       ]
     }

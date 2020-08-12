@@ -81,7 +81,13 @@ class Portfolio extends React.Component {
                         a.group[code].fundTitle = fundValue.FonUnvani
                         a.group[code].price = fundValue.BirimPayDegeri
                         a.group[code].priceDate = new Date(fundValue.Tarih).toLocaleDateString()
+                    } else {
+                        // if fund value not exist
+                        a.group[code].fundTitle = ''
+                        a.group[code].price = 0
+                        a.group[code].priceDate = new Date(this.state.begin).toLocaleDateString()
                     }
+
                 } else {
                     // if fund value not exist
                     a.group[code].fundTitle = ''
