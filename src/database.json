@@ -225,12 +225,6 @@
           "cost": 999.90
         },
         {
-          "code": "TE3",
-          "purchaseDate": "05.08.2020",
-          "purchasePrice": 5.367344,
-          "cost": 998.33
-        },
-        {
           "code": "TPC",
           "purchaseDate": "05.08.2020",
           "purchasePrice": 1.518783,
@@ -241,6 +235,24 @@
           "purchaseDate": "07.08.2020",
           "purchasePrice": 0.112313,
           "cost": 2999.99
+        },
+        {
+          "code": "TPC",
+          "purchaseDate": "13.08.2020",
+          "purchasePrice": 1.585544,
+          "cost": 998.89
+        },
+        {
+          "code": "IPJ",
+          "purchaseDate": "13.08.2020",
+          "purchasePrice": 1.658910,
+          "cost": 499.33
+        },
+        {
+          "code": "YAY",
+          "purchaseDate": "13.08.2020",
+          "purchasePrice": 114.796846,
+          "cost": 1492.36
         }
       ]
     }

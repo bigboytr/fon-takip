@@ -8,6 +8,7 @@ import {
     Redirect
 } from "react-router-dom";
 
+import FirebaseModule from "./controller/FirebaseModule";
 import AuthModule from "./controller/AuthModule";
 
 
@@ -30,6 +31,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
+        new FirebaseModule(); // init firebase
         this.authModule = new AuthModule();
     }
 

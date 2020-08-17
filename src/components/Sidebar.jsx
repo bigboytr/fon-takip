@@ -8,7 +8,6 @@ import {
 
 // Auth Module
 import AuthModule from "../controller/AuthModule";
-import FirebaseModule from "../controller/FirebaseModule";
 import {withRouter} from "react-router-dom";
 
 class Sidebar extends React.Component {
@@ -17,7 +16,7 @@ class Sidebar extends React.Component {
         super(props);
 
         this.auth = new AuthModule();
-        this.firebase = new FirebaseModule();
+        //this.firebase = new FirebaseModule();
 
         this.state = {
             title: null,
@@ -42,7 +41,7 @@ class Sidebar extends React.Component {
         //this.setState({title: null})
     }
 
-    handlePortolioSelect(idx) {
+    handlePortfolioSelect(idx) {
         this.setState({
             selectedPortfolioKey: idx
         })
@@ -61,7 +60,7 @@ class Sidebar extends React.Component {
                         <ListGroupItem
                             active={idx === this.state.selectedPortfolioKey}
                             tag={'button'}
-                            onClick={this.handlePortolioSelect.bind(this, idx)}
+                            onClick={this.handlePortfolioSelect.bind(this, idx)}
                             key={idx}>
                             {item.ref.id}
                         </ListGroupItem>)
