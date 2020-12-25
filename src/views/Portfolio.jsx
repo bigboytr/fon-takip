@@ -1,6 +1,20 @@
 import React from 'react'
+import {connect} from 'react-redux';
 
-import {Container, Row, Col, Card, CardBody, Spinner, Button} from 'reactstrap'
+import {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardBody,
+    Spinner,
+    Button,
+    TabContent,
+    TabPane,
+    NavItem,
+    NavLink,
+    Nav,
+} from 'reactstrap'
 
 
 import data from '../database.json'
@@ -9,6 +23,7 @@ import ListView from '../components/ListView'
 import GridView from '../components/GridView'
 
 import axios from "axios";
+import {setSelectedPortfolio} from "../store/portfolioActions";
 
 class Portfolio extends React.Component {
 
@@ -20,19 +35,23 @@ class Portfolio extends React.Component {
         this.state = {
             groupedPortfolio: null,
             begin: this.prepareDate(true),
-            gridView: false
+            gridView: false,
+            selectedPortfolioKey: 0
         }
     }
 
     componentDidMount() {
         //this.groupingPortfolio();
 
-        this.getFundValues().then(r => {
-            if (r) {
-                this.setState({fundValues: r});
-            }
-            this.groupingPortfolio();
+        this.setState({groupedPortfolio: null}, () => {
+            this.getFundValues().then(r => {
+                if (r) {
+                    this.setState({fundValues: r});
+                }
+                this.groupingPortfolio();
+            })
         })
+
     }
 
     handleDateChange(event) {
@@ -186,42 +205,82 @@ class Portfolio extends React.Component {
         this.setState({gridView : !this.state.gridView})
     }
 
+    handlePortfolioSelect(idx) {
+        this.setState({
+            selectedPortfolioKey: idx
+        })
+        this.props.setSelectedPortfolio(idx);
+    }
+
     render() {
+
+        const { list } = this.props;
+
+        let listItems = null;
+
+        if (list) {
+            listItems = list.map((item, idx) => {
+                if (item.ref) {
+                    return (
+                      <NavItem key={`tab${idx}`}>
+                          <NavLink
+                            className={idx === this.state.selectedPortfolioKey ? 'active' : null}
+                            onClick={this.handlePortfolioSelect.bind(this, idx)}
+                          >
+                              {item.ref.id}
+                          </NavLink>
+                      </NavItem>
+                    )
+                }
+            });
+        }
 
         return (
 
-            <Container className={'portfolio-view'}>
+            <Container fluid className={'portfolio-view'}>
 
-                <Card className={'mt-2 mb-3'}>
-                    <CardBody className={'p-2'}>
-                        <Row>
-                            <Col sm={'3'}>
-                                <div className="form-group">
-                                    <label>Başlangıç :</label>
-                                    <input type="date" className={'form-control'} name={'begin'}
-                                           value={this.state.begin}
-                                           onChange={this.handleDateChange.bind(this)}/>
-                                </div>
-                            </Col>
+                <Row>
+                    <Col>
+                        <Card className={'mt-2 mb-3'}>
+                            <CardBody className={'p-2'}>
+                                <Row>
+                                    <Col sm={'3'}>
+                                        <div className="form-group">
+                                            <label>Başlangıç :</label>
+                                            <input type="date" className={'form-control'} name={'begin'}
+                                                   value={this.state.begin}
+                                                   onChange={this.handleDateChange.bind(this)}/>
+                                        </div>
+                                    </Col>
 
-                            <Col sm={'2'}>
-                                <div className="form-group">
-                                    <label>Getir :</label>
-                                    <button className="btn btn-primary btn-block"
-                                            onClick={this.componentDidMount.bind(this)}>
-                                        Çalıştır
-                                    </button>
-                                </div>
-                            </Col>
-                            <Col sm={'1'}>
-                                <label>Görünüm: </label>
-                                <Button color={'secondary'} onClick={this.switchTemplate.bind(this)}>
-                                    {this.state.gridView ? 'Liste' : 'Grid'}
-                                </Button>
-                            </Col>
-                        </Row>
-                    </CardBody>
-                </Card>
+                                    <Col sm={'2'}>
+                                        <div className="form-group">
+                                            <label>Getir :</label>
+                                            <button className="btn btn-primary btn-block"
+                                                    onClick={this.componentDidMount.bind(this)}>
+                                                Çalıştır
+                                            </button>
+                                        </div>
+                                    </Col>
+                                    <Col sm={'2'}>
+                                        <label>Görünüm: </label>
+                                        <Button color={'secondary'} block onClick={this.switchTemplate.bind(this)}>
+                                            {this.state.gridView ? 'Liste' : 'Grid'}
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+
+                <Row className={'mb-3'}>
+                    <Col>
+                        <Nav tabs className={'tab-section'}>
+                            {listItems}
+                        </Nav>
+                    </Col>
+                </Row>
 
                 {!this.state.groupedPortfolio &&
                 <Row>
@@ -244,4 +303,17 @@ class Portfolio extends React.Component {
     }
 }
 
-export default Portfolio;
+function mapStateToProps(state) {
+    return {
+        activeTab: state.portfolio.selectedPortfolio,
+        list: state.portfolio.list
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setSelectedPortfolio: (id) => {dispatch(setSelectedPortfolio(id))}
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio)

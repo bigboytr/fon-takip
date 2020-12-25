@@ -26,12 +26,31 @@
     }
 
     .fundTitle {
-      position: absolute;
-      width: 250px;
+      display: block;
+      width: 140px;
       overflow: hidden;
       white-space: nowrap;
-      text-overflow: ellipsis;
-      margin-top: -10px;
+      --offset: 0vw;
+      --move-initial: calc(var(--offset));
+      --move-final: calc(-50% + var(--offset));
+
+      span {
+        position: relative;
+        transform: translate3d(var(--move-initial), 0, 0);
+        display: flex;
+        animation-name: long-text;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-direction: reverse;
+        animation-play-state: paused;
+      }
+
+      &:hover {
+        span {
+          animation-play-state: running;
+        }
+      }
     }
 
     tbody {
@@ -45,10 +64,18 @@
         font-weight: 700;
       }
     }
-
-
   }
 
+
+  @keyframes long-text {
+    0% {
+      transform: translate3d(var(--move-initial), 0, 0);
+    }
+
+    100% {
+      transform: translate3d(var(--move-final), 0, 0);
+    }
+  }
 
   // second design
   .portfolio-header {
@@ -72,6 +99,15 @@
 
     p {
       margin: 0;
+    }
+  }
+
+  // tab section
+  .tab-section {
+    background: $color2;
+    .nav-link {
+      padding: 20px;
+      cursor: pointer;
     }
   }
 }

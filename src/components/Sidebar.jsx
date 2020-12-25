@@ -3,8 +3,12 @@ import {connect} from "react-redux";
 
 import {
     Col, Button, ListGroup, ListGroupItem,
-    InputGroup, Input, InputGroupAddon
+    InputGroup, Input, InputGroupAddon,
+    Nav, NavItem, NavLink
 } from 'reactstrap'
+
+// redux
+import {setSelectedPortfolio} from '../store/portfolioActions'
 
 // Auth Module
 import AuthModule from "../controller/AuthModule";
@@ -45,6 +49,7 @@ class Sidebar extends React.Component {
         this.setState({
             selectedPortfolioKey: idx
         })
+      this.props.setSelectedPortfolio(idx);
     }
 
     render() {
@@ -57,13 +62,23 @@ class Sidebar extends React.Component {
             listItems = list.map((item, idx) => {
                 if (item.ref) {
                     return (
+                      <NavItem key={`tab${idx}`}>
+                          <NavLink
+                            className={idx === this.state.selectedPortfolioKey ? 'active' : null}
+                            onClick={this.handlePortfolioSelect.bind(this, idx)}
+                          >
+                              {item.ref.id}
+                          </NavLink>
+                      </NavItem>
+                    )
+                    /*return (
                         <ListGroupItem
                             active={idx === this.state.selectedPortfolioKey}
                             tag={'button'}
                             onClick={this.handlePortfolioSelect.bind(this, idx)}
                             key={idx}>
                             {item.ref.id}
-                        </ListGroupItem>)
+                        </ListGroupItem>)*/
                 }
             });
         }
@@ -82,6 +97,10 @@ class Sidebar extends React.Component {
                     {portfolioButtonText}
                 </Button>
 
+                <Nav tabs vertical={true}>
+                    {listItems}
+                </Nav>
+
                 <ListGroup>
                     {this.state.showForm &&
                     <ListGroupItem>
@@ -94,8 +113,6 @@ class Sidebar extends React.Component {
                         </InputGroup>
                     </ListGroupItem>
                     }
-
-                    {listItems}
                 </ListGroup>
 
                 <Button className={'logout'} color={'danger'} onClick={this.auth.logout}>
@@ -113,4 +130,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Sidebar)
+function mapDispatchToProps(dispatch) {
+  return {
+    setSelectedPortfolio: (id) => {dispatch(setSelectedPortfolio(id))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)

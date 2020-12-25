@@ -1,7 +1,8 @@
-import {SET_LIST} from "./portfolioActions";
+import {SET_LIST, SET_SELECTED_PORTFOLIO} from "./portfolioActions";
 
 const initalState = {
-    list: null
+    list: null,
+    selectedPortfolio: 0
 }
 
 const PortfolioReducer = (state = initalState, action) => {
@@ -10,7 +11,12 @@ const PortfolioReducer = (state = initalState, action) => {
 
         case SET_LIST: {
             const {list} = action;
-            return {...state, list}
+            return {...state, ...{ list }}
+        }
+
+        case SET_SELECTED_PORTFOLIO: {
+            const {id} = action;
+            return {...state, ...{ selectedPortfolio: id }}
         }
 
         default: return state

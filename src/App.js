@@ -22,6 +22,7 @@ import {fas} from '@fortawesome/free-solid-svg-icons'
 import {far} from '@fortawesome/free-regular-svg-icons'
 
 import { Container, Row, Col } from 'reactstrap'
+import Header from "./components/Header";
 
 library.add(fas, far);
 
@@ -46,26 +47,20 @@ class App extends React.Component {
         return (
 
             <Container fluid>
-
-                <Row>
-                    {isLogged &&
-                    <Sidebar />
-                    }
-                    <Col className={ isLogged ? 'offset-2' : ''}>
-
-                        <Router>
-                            <Switch>
-                                <Route path={'/'} exact component={Login} />
-                                <Route path={'/login'} exact component={Login} />
-                                <Route path={'/portfolio'} exact component={Portfolio} />
-                                {/*<Redirect from="*" to="/" />*/}
-                            </Switch>
-                        </Router>
-                    </Col>
-                </Row>
-
+                {isLogged &&
+                <Header />
+                }
+                <section className={'h-100'}>
+                    <Router>
+                        <Switch>
+                            <Route path={'/'} exact component={Login} />
+                            <Route path={'/login'} exact component={Login} />
+                            <Route path={'/portfolio'} exact component={Portfolio} />
+                            {/*<Redirect from="*" to="/" />*/}
+                        </Switch>
+                    </Router>
+                </section>
             </Container>
-
         )
     }
 }

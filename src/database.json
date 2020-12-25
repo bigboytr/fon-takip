@@ -40,12 +40,6 @@
           "cost": 9999.96
         },
         {
-          "code": "KTM",
-          "purchaseDate": "29.05.2020",
-          "purchasePrice": 1.998561,
-          "cost": 9998.8
-        },
-        {
           "code": "TCD",
           "purchaseDate": "29.05.2020",
           "purchasePrice": 2.122473,
@@ -62,12 +56,6 @@
           "purchaseDate": "04.06.2020",
           "purchasePrice": 0.067766,
           "cost": 4994.35
-        },
-        {
-          "code": "TIE",
-          "purchaseDate": "08.06.2020",
-          "purchasePrice": 0.056954,
-          "cost": 9966.95
         },
         {
           "code": "TTE",
@@ -94,10 +82,40 @@
           "cost": 4999.98
         },
         {
-          "code": "AKE",
-          "purchaseDate": "17.06.2020",
-          "purchasePrice": 0.056049,
-          "cost": 7399.98
+          "code": "TTA",
+          "purchaseDate": "20.08.2020",
+          "purchasePrice": 0.051322,
+          "cost": 6979.79
+        },
+        {
+          "code": "AFT",
+          "purchaseDate": "20.08.2020",
+          "purchasePrice": 0.070850,
+          "cost": 3369.98
+        },
+        {
+          "code": "AFT",
+          "purchaseDate": "21.08.2020",
+          "purchasePrice": 0.070975,
+          "cost": 1629.94
+        },
+        {
+          "code": "TTE",
+          "purchaseDate": "21.08.2020",
+          "purchasePrice": 0.096015,
+          "cost": 5760.90
+        },
+        {
+          "code": "TI2",
+          "purchaseDate": "25.08.2020",
+          "purchasePrice": 59.610156,
+          "cost": 357.66
+        },
+        {
+          "code": "AFT",
+          "purchaseDate": "24.11.2020",
+          "purchasePrice": 0.079002,
+          "cost": 10749.96
         }
       ]
     },
@@ -123,18 +141,6 @@
           "cost": 1000
         },
         {
-          "code": "AES",
-          "purchaseDate": "09.04.2020",
-          "purchasePrice": 0.008522,
-          "cost": 1000
-        },
-        {
-          "code": "TYH",
-          "purchaseDate": "29.04.2020",
-          "purchasePrice": 0.097822,
-          "cost": 1499.90
-        },
-        {
           "code": "TUA",
           "purchaseDate": "29.05.2020",
           "purchasePrice": 0.090194,
@@ -145,12 +151,6 @@
           "purchaseDate": "29.05.2020",
           "purchasePrice": 1.292309,
           "cost": 1499.08
-        },
-        {
-          "code": "TYH",
-          "purchaseDate": "05.06.2020",
-          "purchasePrice": 0.104646,
-          "cost": 500
         },
         {
           "code": "IPJ",
@@ -169,12 +169,6 @@
           "purchaseDate": "24.06.2020",
           "purchasePrice": 101.158542,
           "cost": 2427.81
-        },
-        {
-          "code": "AES",
-          "purchaseDate": "01.07.2020",
-          "purchasePrice": 0.007999,
-          "cost": 999.99
         },
         {
           "code": "TKF",
@@ -219,28 +213,10 @@
           "cost": 1168.96
         },
         {
-          "code": "TYH",
-          "purchaseDate": "29.07.2020",
-          "purchasePrice": 0.109398,
-          "cost": 999.90
-        },
-        {
-          "code": "TPC",
-          "purchaseDate": "05.08.2020",
-          "purchasePrice": 1.518783,
-          "cost": 1998.72
-        },
-        {
           "code": "TUA",
           "purchaseDate": "07.08.2020",
           "purchasePrice": 0.112313,
           "cost": 2999.99
-        },
-        {
-          "code": "TPC",
-          "purchaseDate": "13.08.2020",
-          "purchasePrice": 1.585544,
-          "cost": 998.89
         },
         {
           "code": "IPJ",
@@ -253,6 +229,24 @@
           "purchaseDate": "13.08.2020",
           "purchasePrice": 114.796846,
           "cost": 1492.36
+        },
+        {
+          "code": "YAY",
+          "purchaseDate": "02.09.2020",
+          "purchasePrice": 123.849496,
+          "cost": 1981.59
+        },
+        {
+          "code": "IPJ",
+          "purchaseDate": "10.10.2020",
+          "purchasePrice": 1.929056,
+          "cost": 1498.88
+        },
+        {
+          "code": "YAY",
+          "purchaseDate": "24.11.2020",
+          "purchasePrice": 130.702862,
+          "cost": 914.92
         }
       ]
     }

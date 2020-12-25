@@ -39,7 +39,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <Row className={"h-100 justify-content-center align-items-center login"} noGutters>
+            <Row className={"h-100 d-flex justify-content-center align-items-center login"} noGutters>
                 <div className={'login-bg'}></div>
                 <Col md={4} className={'mx-auto text-center'}>
 
@@ -76,7 +76,6 @@ class Login extends React.Component {
 
                             <Row className={'m-0'}>
                                 <Col className={'m-0 p-0'}>
-                                    Remember me
                                 </Col>
                                 <Col className={'m-0 p-0'}>
                                     <FormGroup className={'text-right'}>
@@ -84,15 +83,6 @@ class Login extends React.Component {
                                             Login
                                         </Button>
                                     </FormGroup>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col>
-                                    <Button color={'danger'} block
-                                            onClick={this.handleLogout.bind(this)}>
-                                        Login
-                                    </Button>
                                 </Col>
                             </Row>
                         </CardBody>
