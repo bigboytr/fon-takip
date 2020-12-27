@@ -18,7 +18,7 @@ class Header extends React.Component {
         return (
           <Row className={'header p-2'}>
               <Col md={3}>
-                  <div className={'logo d-block'} />
+                  <div className={'logo'} />
               </Col>
               <Col md={1} className={'offset-md-8'}>
                   <Button className={'logout'} color={'danger'} onClick={this.auth.logout}>

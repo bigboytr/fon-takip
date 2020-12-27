@@ -43,6 +43,8 @@ class Portfolio extends React.Component {
     componentDidMount() {
         //this.groupingPortfolio();
 
+        if (localStorage.getItem('isLogged') === 'notLogged') this.props.history.push('/login')
+
         this.setState({groupedPortfolio: null}, () => {
             this.getFundValues().then(r => {
                 if (r) {

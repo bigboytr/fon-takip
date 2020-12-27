@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import store from "../store/store";
 import {setUser} from "../store/authActions";
-import {Redirect} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import PortfolioModule from "./PortfolioModule";
 
 
@@ -44,11 +44,9 @@ export default class AuthModule {
 
     logout() {
 
-        alert("geldi");
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
             this.setAuthentication(null);
-            Redirect('/login')
 
         }).catch((errors) => {
 
@@ -74,5 +72,7 @@ export default class AuthModule {
     setAuthentication(user) {
 
         this.store.dispatch(setUser(user))
+        const v = user ? 'logged' : 'notLogged';
+        localStorage.setItem('isLogged', v);
     }
 }

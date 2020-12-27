@@ -1,7 +1,7 @@
 .login{
 
   ::placeholder{
-    color: $white
+    color: $color1;
   }
   /*.login-bg {
     display: flex;
@@ -13,8 +13,12 @@
     filter: blur(20px) opacity(55%);
   }*/
 
+  .logo {
+    box-shadow: 0 2px 5px #dfdfdf;
+  }
+
   .card {
-    background: rgba(255,255,255,.3);
+    background: $gray-bg;
   }
 
   // text color
@@ -24,8 +28,7 @@
     background: none;
     @include no-border;
     @include no-radius;
-    border-bottom: 1px $color3 solid;
-    color: $color5;
+    color: $text;
     outline: none;
 
     &:focus {
@@ -37,7 +40,7 @@
     background: none;
     @include no-radius;
     @include no-border;
-    color: $color5;
+    color: $text;
   }
 
   .btn {

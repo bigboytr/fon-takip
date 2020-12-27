@@ -4,8 +4,7 @@ import {withRouter} from "react-router-dom";
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Redirect
+    Route
 } from "react-router-dom";
 
 import FirebaseModule from "./controller/FirebaseModule";
@@ -13,7 +12,6 @@ import AuthModule from "./controller/AuthModule";
 
 
 // Components
-import Sidebar from "./components/Sidebar";
 import Portfolio from "./views/Portfolio";
 import Login from "./views/Login";
 

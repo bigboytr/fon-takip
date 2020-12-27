@@ -9,6 +9,9 @@ import {withRouter} from "react-router-dom";
 // Module
 import AuthModule from "../controller/AuthModule";
 
+// img
+import logo from '../assets/images/fon-logo.png';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +21,11 @@ class Login extends React.Component {
             email: null,
             password: null
         }
+    }
+
+    componentDidMount() {
+
+        if (localStorage.getItem('isLogged') === 'logged') this.props.history.push('/portfolio')
     }
 
     handleInputChange(e) {
@@ -40,11 +48,13 @@ class Login extends React.Component {
     render() {
         return (
             <Row className={"h-100 d-flex justify-content-center align-items-center login"} noGutters>
-                <div className={'login-bg'}></div>
+
                 <Col md={4} className={'mx-auto text-center'}>
 
                     <Card>
                         <CardBody>
+                            <img src={logo} className={'mb-3'} alt="Fon takip"/>
+
                             <FormGroup>
                                 <InputGroup>
                                     <InputGroupAddon addonType="prepend">
@@ -73,18 +83,11 @@ class Login extends React.Component {
                                 </InputGroup>
                             </FormGroup>
 
-
-                            <Row className={'m-0'}>
-                                <Col className={'m-0 p-0'}>
-                                </Col>
-                                <Col className={'m-0 p-0'}>
-                                    <FormGroup className={'text-right'}>
-                                        <Button color={'primary'} block onClick={this.handleLogin.bind(this)}>
-                                            Login
-                                        </Button>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
+                            <FormGroup className={'text-right'}>
+                                <Button color={'primary'} block onClick={this.handleLogin.bind(this)}>
+                                    Login
+                                </Button>
+                            </FormGroup>
                         </CardBody>
                     </Card>
                 </Col>
