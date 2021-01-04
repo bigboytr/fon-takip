@@ -69,36 +69,32 @@ class ListView extends React.Component {
                                           <CardHeader>Yatırım Özeti</CardHeader>
                                           <CardBody>
                                               <Row className={'mb-2'}>
-                                                  <Col sm={12} xl={4} className={'text-center text-xl-left'}>
-                                                      Yatırım:
+                                                  <Col sm={12} xl={5} className={'text-center text-xl-left'}>
+                                                      Yatırım / Kasa:
                                                   </Col>
-                                                  <Col sm={12} xl={8} className={'p-0 text-center text-xl-left'}>
-                                                      <h5>{this.readableNumber(this.grandCost, '₺', true)}</h5>
+                                                  <Col sm={12} xl={7} className={'p-0 d-flex justify-content-center'}>
+                                                      <h6>
+                                                          {this.readableNumber(this.grandCost, '₺', true)}
+
+                                                          <span className={`ml-4 ${grandProfitLoss > 0 ? 'text-success' : 'text-danger'}`}>
+                                                              {this.readableNumber((this.grandCost + grandProfitLoss), '₺', true)}
+                                                              <ArrowIcon className={'ml-2'} indicator={(grandProfitLoss > 0 )} />
+                                                          </span>
+                                                      </h6>
                                                   </Col>
                                               </Row>
                                               <Row className={'mb-2'}>
-                                                  <Col sm={12} xl={4} className={'text-center text-xl-left'}>
-                                                      Kar / Zarar:
+                                                  <Col sm={12} xl={5} className={'text-center text-xl-left'}>
+                                                      Kazanç / Değişim:
                                                   </Col>
-                                                  <Col sm={12} xl={8} className={'p-0 text-center text-xl-left'}>
-                                                      <h5 className={grandProfitLoss > 0 ? 'text-success' : 'text-danger'}>
+                                                  <Col sm={12} xl={7} className={'p-0 text-center text-xl-left'}>
+                                                      <h6 className={grandProfitLoss > 0 ? 'text-success' : 'text-danger'}>
                                                           {this.readableNumber(grandProfitLoss, '₺', true)}
                                                           <span className={'ml-4'}>
                                                               {this.readableNumber(((grandProfitLoss / this.grandCost) * 100), '%')}
                                                           </span>
                                                           <ArrowIcon className={'ml-2'} indicator={(grandProfitLoss > 0 )} />
-                                                      </h5>
-                                                  </Col>
-                                              </Row>
-                                              <Row className={'mb-2'}>
-                                                  <Col sm={12} xl={4} className={'text-center text-xl-left'}>
-                                                      Kasa:
-                                                  </Col>
-                                                  <Col sm={12} xl={8} className={'p-0 text-center text-xl-left'}>
-                                                      <h5 className={grandProfitLoss > 0 ? 'text-success' : 'text-danger'}>
-                                                          {this.readableNumber((this.grandCost + grandProfitLoss), '₺', true)}
-                                                          <ArrowIcon className={'ml-2'} indicator={(grandProfitLoss > 0 )} />
-                                                      </h5>
+                                                      </h6>
                                                   </Col>
                                               </Row>
                                           </CardBody>
