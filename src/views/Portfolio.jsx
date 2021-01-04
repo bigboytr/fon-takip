@@ -13,7 +13,7 @@ import {
     TabPane,
     NavItem,
     NavLink,
-    Nav,
+    Nav, InputGroup, InputGroupAddon, ButtonGroup, Input,
 } from 'reactstrap'
 
 
@@ -24,6 +24,7 @@ import GridView from '../components/GridView'
 
 import axios from "axios";
 import {setSelectedPortfolio} from "../store/portfolioActions";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class Portfolio extends React.Component {
 
@@ -214,11 +215,18 @@ class Portfolio extends React.Component {
         this.props.setSelectedPortfolio(idx);
     }
 
+    handlePortfolioSelection(e) {
+        this.setState({
+            selectedPortfolioKey: +e.target.value
+        })
+        this.props.setSelectedPortfolio(+e.target.value);
+    }
+
     render() {
 
         const { list } = this.props;
 
-        let listItems = null;
+        let listItems, listOptions = null;
 
         if (list) {
             listItems = list.map((item, idx) => {
@@ -235,54 +243,64 @@ class Portfolio extends React.Component {
                     )
                 }
             });
+
+            listOptions = list.map((item, idx) => {
+                if (item.ref) {
+                    return (
+                      <option key={`tab${idx}`} value={idx}>
+                          {item.ref.id}
+                      </option>
+                    )
+                }
+            });
         }
 
         return (
 
             <Container fluid className={'portfolio-view'}>
 
-                <Row>
-                    <Col>
-                        <Card className={'mt-2 mb-3'}>
-                            <CardBody className={'p-2'}>
-                                <Row>
-                                    <Col sm={'3'}>
-                                        <div className="form-group">
-                                            <label>Başlangıç :</label>
-                                            <input type="date" className={'form-control'} name={'begin'}
-                                                   value={this.state.begin}
-                                                   onChange={this.handleDateChange.bind(this)}/>
-                                        </div>
-                                    </Col>
+                <Card className={'my-3'}>
+                    <CardBody className={'p-2'}>
+                        <Row>
+                            <Col sm={'3'}>
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <input type="date" className={'form-control'} name={'begin'}
+                                               value={this.state.begin}
+                                               onChange={this.handleDateChange.bind(this)}/>
+                                    </InputGroupAddon>
+                                    <button className="btn btn-primary"
+                                            onClick={this.componentDidMount.bind(this)}>
+                                        <FontAwesomeIcon icon={['fas', 'running']} className={'fa-fw'} />
+                                    </button>
+                                </InputGroup>
+                            </Col>
+                            <Col sm={2}>
+                                <Input type={"select"} onChange={this.handlePortfolioSelection.bind(this)}>
+                                    {listOptions}
+                                </Input>
+                            </Col>
+                            <Col sm={2}>
+                              <ButtonGroup>
+                                <Button onClick={this.switchTemplate.bind(this)}>
+                                    <FontAwesomeIcon icon={['fas', 'bars']} className={'fa-fw'} />
+                                </Button>
+                                <Button onClick={this.switchTemplate.bind(this)}>
+                                    <FontAwesomeIcon icon={['fas', 'th-large']} className={'fa-fw'} />
+                                </Button>
+                              </ButtonGroup>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
 
-                                    <Col sm={'2'}>
-                                        <div className="form-group">
-                                            <label>Getir :</label>
-                                            <button className="btn btn-primary btn-block"
-                                                    onClick={this.componentDidMount.bind(this)}>
-                                                Çalıştır
-                                            </button>
-                                        </div>
-                                    </Col>
-                                    <Col sm={'2'}>
-                                        <label>Görünüm: </label>
-                                        <Button color={'secondary'} block onClick={this.switchTemplate.bind(this)}>
-                                            {this.state.gridView ? 'Liste' : 'Grid'}
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-
-                <Row className={'mb-3'}>
+                {/*<Row className={'mb-3'}>
                     <Col>
                         <Nav tabs className={'tab-section'}>
                             {listItems}
                         </Nav>
                     </Col>
-                </Row>
+                </Row>*/}
 
                 {!this.state.groupedPortfolio &&
                 <Row>

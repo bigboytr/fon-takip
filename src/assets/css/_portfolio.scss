@@ -1,11 +1,10 @@
 .portfolio-view {
   .card {
     //@include no-radius;
-    background-color: $color3;
+    background-color: $gray-bg;
   }
 
   .btn {
-    @include boxShadow($color1);
 
     &:focus {
       box-shadow: none;
