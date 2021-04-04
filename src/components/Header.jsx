@@ -5,6 +5,8 @@ import {
 
 import AuthModule from "../controller/AuthModule";
 
+import logo from '../assets/images/fon-logo.png';
+
 class Header extends React.Component {
 
     constructor(props) {
@@ -18,7 +20,9 @@ class Header extends React.Component {
         return (
           <Row className={'header p-2'}>
               <Col md={3}>
-                  <div className={'logo'} />
+                  <div className={'logo'}>
+                    <img src={logo} alt=""/>
+                  </div>
               </Col>
               <Col md={1} className={'offset-md-8'}>
                   <Button className={'logout'} color={'danger'} onClick={this.auth.logout}>

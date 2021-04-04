@@ -1,8 +1,9 @@
-import {SET_LIST, SET_SELECTED_PORTFOLIO} from "./portfolioActions";
+import {SET_LIST, SET_SELECTED_PORTFOLIO, SET_SELECTED_PORTFOLIO_TEXT} from "./portfolioActions";
 
 const initalState = {
     list: null,
-    selectedPortfolio: 0
+    selectedPortfolio: 0,
+    selectedPortfolioText: ""
 }
 
 const PortfolioReducer = (state = initalState, action) => {
@@ -17,6 +18,11 @@ const PortfolioReducer = (state = initalState, action) => {
         case SET_SELECTED_PORTFOLIO: {
             const {id} = action;
             return {...state, ...{ selectedPortfolio: id }}
+        }
+
+        case SET_SELECTED_PORTFOLIO_TEXT: {
+            const {value} = action;
+            return {...state, ...{ selectedPortfolioText: value }}
         }
 
         default: return state

@@ -1,21 +1,4 @@
 .portfolio-view {
-  .card {
-    //@include no-radius;
-    background-color: $gray-bg;
-  }
-
-  .btn {
-
-    &:focus {
-      box-shadow: none;
-    }
-
-    &.btn-primary {
-      &:focus {
-        box-shadow: none;
-      }
-    }
-  }
 
   .portfolio-list {
 
@@ -26,30 +9,10 @@
 
     .fundTitle {
       display: block;
-      width: 140px;
-      overflow: hidden;
+      width: 250px;
       white-space: nowrap;
-      --offset: 0vw;
-      --move-initial: calc(var(--offset));
-      --move-final: calc(-50% + var(--offset));
-
-      span {
-        position: relative;
-        transform: translate3d(var(--move-initial), 0, 0);
-        display: flex;
-        animation-name: long-text;
-        animation-duration: 5s;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
-        animation-direction: reverse;
-        animation-play-state: paused;
-      }
-
-      &:hover {
-        span {
-          animation-play-state: running;
-        }
-      }
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     tbody {
@@ -58,23 +21,8 @@
       }
     }
 
-    tfoot {
-      h6 {
-        font-weight: 700;
-      }
-    }
   }
 
-
-  @keyframes long-text {
-    0% {
-      transform: translate3d(var(--move-initial), 0, 0);
-    }
-
-    100% {
-      transform: translate3d(var(--move-final), 0, 0);
-    }
-  }
 
   // second design
   .portfolio-header {

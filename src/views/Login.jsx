@@ -25,7 +25,7 @@ class Login extends React.Component {
 
     componentDidMount() {
 
-        if (localStorage.getItem('isLogged') === 'logged') this.props.history.push('/portfolio')
+        if (localStorage.getItem('isLogged') === 'logged') this.props.history.push('/dashboard')
     }
 
     handleInputChange(e) {
@@ -36,7 +36,7 @@ class Login extends React.Component {
 
         this.setState({email: this.state.email, password: this.state.password}, () => {
             this.authModule.login(this.state).then(r => {
-                this.props.history.push('/portfolio')
+                this.props.history.push('/dashboard')
             })
         })
     }

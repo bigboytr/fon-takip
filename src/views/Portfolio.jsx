@@ -9,11 +9,10 @@ import {
     CardBody,
     Spinner,
     Button,
-    TabContent,
-    TabPane,
     NavItem,
     NavLink,
-    Nav, InputGroup, InputGroupAddon, ButtonGroup, Input,
+    FormGroup, Label,
+    InputGroup, InputGroupAddon, ButtonGroup, Input,
 } from 'reactstrap'
 
 
@@ -23,7 +22,8 @@ import ListView from '../components/ListView'
 import GridView from '../components/GridView'
 
 import axios from "axios";
-import {setSelectedPortfolio} from "../store/portfolioActions";
+import {setSelectedPortfolio, setSelectedPortfolioText} from "../store/portfolioActions";
+import PortfolioModule from "../controller/PortfolioModule";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class Portfolio extends React.Component {
@@ -33,11 +33,14 @@ class Portfolio extends React.Component {
 
         this.portfolio = data.portfolio;
 
+        this.pm = new PortfolioModule();
+
         this.state = {
             groupedPortfolio: null,
             begin: this.prepareDate(true),
             gridView: false,
-            selectedPortfolioKey: 0
+            selectedPortfolioKey: 0,
+            fundCode: null
         }
     }
 
@@ -177,7 +180,8 @@ class Portfolio extends React.Component {
                 })
 
                 const begin = this.prepareDate(false)
-                const proxy = "https://cors-anywhere.herokuapp.com/"
+                // const proxy = "https://cors-anywhere.herokuapp.com/"
+                const proxy = "https://thingproxy.freeboard.io/fetch/"
                 const spk = "https://ws.spk.gov.tr/PortfolioValues/api/PortfoyDegerleri/"
 
                 const code = codes.join(',');
@@ -187,7 +191,6 @@ class Portfolio extends React.Component {
 
                     axios({
                         method: "GET",
-                        //url: "./server.php",
                         url: proxy+spk+params,
                         data: {
                             code: codes.join(','),
@@ -220,11 +223,24 @@ class Portfolio extends React.Component {
             selectedPortfolioKey: +e.target.value
         })
         this.props.setSelectedPortfolio(+e.target.value);
+        this.props.setSelectedPortfolioText(e.target.selectedOptions[0].text);
+    }
+
+    handleInputChange(e) {
+        this.setState({[e.target.name]: e.target.value})
+    }
+
+    saveFund() {
+
+        const {list, portfolioId} = this.props;
+        const activePortfolioTitle = list[portfolioId].ref.id;
+
+        this.pm.saveFundToPortfolio(activePortfolioTitle, this.state.fundCode)
     }
 
     render() {
 
-        const { list } = this.props;
+        const { list, portfolioId } = this.props;
 
         let listItems, listOptions = null;
 
@@ -246,8 +262,9 @@ class Portfolio extends React.Component {
 
             listOptions = list.map((item, idx) => {
                 if (item.ref) {
+                    const selected = idx === portfolioId;
                     return (
-                      <option key={`tab${idx}`} value={idx}>
+                      <option key={`tab${idx}`} value={idx} selected={selected}>
                           {item.ref.id}
                       </option>
                     )
@@ -257,7 +274,7 @@ class Portfolio extends React.Component {
 
         return (
 
-            <Container fluid className={'portfolio-view'}>
+            <Container className={'portfolio-view'}>
 
                 <Card className={'my-3'}>
                     <CardBody className={'p-2'}>
@@ -317,6 +334,29 @@ class Portfolio extends React.Component {
                 {(this.state.groupedPortfolio && this.state.gridView) &&
                     <GridView groupedPortfolio={this.state.groupedPortfolio} selectedDate={this.state.begin} />
                 }
+
+
+                <Card className={'my-3'}>
+                    <CardBody className={'p-2'}>
+                        <Row>
+                            <Col sm={'6'}>
+                              <FormGroup row>
+                                  <Label sm={2}>Fon Kodu: </Label>
+                                  <Col sm={7}>
+                                      <Input type="text" name="fundCode" placeholder="AFO / AFT"
+                                             onChange={this.handleInputChange.bind(this)} />
+                                  </Col>
+                                  <Col sm={3}>
+                                      <Button onClick={this.saveFund.bind(this)}>
+                                          <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                          Kaydet
+                                      </Button>
+                                  </Col>
+                              </FormGroup>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
             </Container>
 
         )
@@ -325,7 +365,7 @@ class Portfolio extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        activeTab: state.portfolio.selectedPortfolio,
+        portfolioId: state.portfolio.selectedPortfolio,
         list: state.portfolio.list
 
     }
@@ -333,7 +373,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setSelectedPortfolio: (id) => {dispatch(setSelectedPortfolio(id))}
+        setSelectedPortfolio: (id) => {dispatch(setSelectedPortfolio(id))},
+        setSelectedPortfolioText: (value) => {dispatch(setSelectedPortfolioText(value))}
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio)

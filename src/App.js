@@ -13,6 +13,7 @@ import AuthModule from "./controller/AuthModule";
 
 // Components
 import Portfolio from "./views/Portfolio";
+import Dashboard from "./views/Dashboard";
 import Login from "./views/Login";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
@@ -53,6 +54,7 @@ class App extends React.Component {
                         <Switch>
                             <Route path={'/'} exact component={Login} />
                             <Route path={'/login'} exact component={Login} />
+                            <Route path={'/dashboard'} exact component={Dashboard} />
                             <Route path={'/portfolio'} exact component={Portfolio} />
                             {/*<Redirect from="*" to="/" />*/}
                         </Switch>

@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export default function ArrowIcon(props) {
     return (
         <span className={props.className}>
-            <FontAwesomeIcon icon={props.indicator ? ['fas', 'arrow-up'] : ['fas', 'arrow-down']} />
+            <FontAwesomeIcon className={'ml-2'} icon={props.isProfit ? ['fas', 'arrow-up'] : ['fas', 'arrow-down']} />
         </span>
     )
 }

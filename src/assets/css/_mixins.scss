@@ -12,13 +12,27 @@
 }
 
 @mixin boxShadow($color) {
-  box-shadow: 0 3px 6px $color;
+  //box-shadow: 0 -10px 30px $color;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+}
+
+@mixin card-shadow($shadow) {
+  box-shadow: $shadow;
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  -o-box-shadow: $shadow;
 }
 
 @mixin gradient-bg($bg1, $bg2) {
   background: $bg1;
+  background: -moz-linear-gradient(140deg, $bg1 100%, $bg2 50%);
+  background: -webkit-linear-gradient(140deg, $bg1 60%, $bg2 50%);
+  background: linear-gradient(140deg, $bg1 20%, $bg2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$bg1,endColorstr=$bg2,GradientType=1);
+
+  /*background: $bg1;
   background: -moz-linear-gradient(140deg, $bg1 0%, $bg1 50%);
   background: -webkit-linear-gradient(140deg, $bg1 0%, $bg2 50%);
   background: linear-gradient(140deg, $bg1 0%, $bg2 50%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$bg1,endColorstr=$bg2,GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$bg1,endColorstr=$bg2,GradientType=1);*/
 }

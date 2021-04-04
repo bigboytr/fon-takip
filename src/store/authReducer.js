@@ -1,4 +1,4 @@
-import {SET_USER} from "./authActions";
+import {GET_USER, SET_USER} from "./authActions";
 
 const initialState = {
     user: null,
@@ -20,6 +20,10 @@ const authReducer = (state = initialState, action) => {
                 localStorage.removeItem('user')
             }
             return {...state, ...{user}, isLogged}
+        }
+
+        case GET_USER: {
+            return state.user;
         }
 
         default: return state
