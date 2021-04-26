@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import store from "../store/store";
 import {setUser} from "../store/authActions";
+import {setList} from "../store/fundListActions";
 import {useHistory} from "react-router-dom";
 import PortfolioModule from "./PortfolioModule";
 
@@ -65,6 +66,9 @@ export default class AuthModule {
             this.setAuthentication(user ? user : null)
             if (user) {
                 this.portfolioModule.getPortfolios();
+
+                // fund list
+                this.store.dispatch(setList())
             }
         });
     }
