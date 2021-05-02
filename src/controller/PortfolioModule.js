@@ -11,14 +11,12 @@ export default class PortfolioModule {
 
     getPortfolios() {
         // get user's portfolio list
-
         const userId = store.getState().auth.user.uid;
 
-        this.db.collection(userId).get().then(snap => {
-            //console.log(snap.docs);
-
-            if (snap.docs)
-                store.dispatch(setList(snap.docs))
+        this.db.collection(userId).doc('portfolio').get().then(snap => {
+            const keys = Object.keys(snap.data())
+            if (keys)
+                store.dispatch(setList(keys))
 
         })
     }
@@ -45,6 +43,7 @@ export default class PortfolioModule {
             purchasePrice: 0.089567,
             cost: 999.93
             * */
+    // Create new Portfolio
     savePortfolio(title) {
         const userId = store.getState().auth.user.uid;
 
@@ -53,18 +52,45 @@ export default class PortfolioModule {
         })
     }
 
+
+    // Get selected portfolio data
+    getFundDataObj(portfolio, funCode) {
+
+        const userId = store.getState().auth.user.uid
+
+        return this.db.collection(userId).doc('portfolio').get().then(snap => {
+            const d = snap.data()
+            return d[portfolio][funCode]
+        })
+    }
+
     /*Save fund to portfolio */
-    saveFundToPortfolio(portfolio, fundCode) {
+    async saveFundToPortfolio(portfolio, dto) {
 
-        const userId = store.getState().auth.user.uid;
+        const userId = store.getState().auth.user.uid
 
-        this.db.collection(userId).doc(portfolio).collection(fundCode).add({
-            cost: 0,
-            purchasePrice: 0
-        }).then(snap => {
-            this.getPortfolioFunds(portfolio)
+        const {fundCode, purchaseDate, purchasePrice, cost} = dto
+        let fundData = await this.getFundDataObj(portfolio, fundCode);
+        fundData = !fundData ? [] : fundData
+
+        const data = {
+            [portfolio]: {
+                [fundCode]: [
+                    ...fundData,
+                    {
+                        purchaseDate: new Date(purchaseDate),
+                        purchasePrice: parseFloat(purchasePrice),
+                        cost: parseFloat(cost),
+                    },
+                ]
+            }
+        }
+
+        return this.db.collection(userId).doc("portfolio").set(data, { merge: true }).then(function() {
+            return true
+        }).catch(err => {
+            console.log(err)
+            return false
         });
-
-        //this.db.collection()
     }
 }

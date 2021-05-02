@@ -9,15 +9,13 @@ import {
     CardBody,
     Spinner,
     Button,
-    NavItem,
-    NavLink,
+    Alert,
     FormGroup, Label,
     InputGroup, InputGroupAddon, ButtonGroup, Input,
 } from 'reactstrap'
 
 
 import data from '../database.json'
-import spk from '../spk.json' // mock
 import ListView from '../components/ListView'
 import GridView from '../components/GridView'
 
@@ -40,7 +38,11 @@ class Portfolio extends React.Component {
             begin: this.prepareDate(true),
             gridView: false,
             selectedPortfolioKey: 0,
-            fundCode: null
+            fundCode: null,
+            purchaseDate: null,
+            purchasePrice: null,
+            cost: null,
+            saveItemToPortfolio: null
         }
     }
 
@@ -232,41 +234,42 @@ class Portfolio extends React.Component {
 
     saveFund() {
 
-        const {list, portfolioId} = this.props;
-        const activePortfolioTitle = list[portfolioId].ref.id;
+        this.setState({
+            saveItemToPortfolio: null
+        })
 
-        this.pm.saveFundToPortfolio(activePortfolioTitle, this.state.fundCode)
+        const {list, portfolioId} = this.props;
+        const activePortfolioTitle = list[portfolioId];
+
+        const dto = {
+            fundCode: this.state.fundCode,
+            purchaseDate: this.state.purchaseDate,
+            purchasePrice: this.state.purchasePrice,
+            cost: this.state.cost
+        }
+
+        const r = this.pm.saveFundToPortfolio(activePortfolioTitle, dto)
+        this.setState({
+            saveItemToPortfolio: r
+        })
     }
 
     render() {
 
         const { list, portfolioId } = this.props;
+        const { saveItemToPortfolio, begin, groupedPortfolio, gridView } = this.state
 
-        let listItems, listOptions = null;
+        let listOptions = null;
 
         if (list) {
-            listItems = list.map((item, idx) => {
-                if (item.ref) {
-                    return (
-                      <NavItem key={`tab${idx}`}>
-                          <NavLink
-                            className={idx === this.state.selectedPortfolioKey ? 'active' : null}
-                            onClick={this.handlePortfolioSelect.bind(this, idx)}
-                          >
-                              {item.ref.id}
-                          </NavLink>
-                      </NavItem>
-                    )
-                }
-            });
 
             listOptions = list.map((item, idx) => {
-                if (item.ref) {
+                if (item) {
                     const selected = idx === portfolioId;
                     return (
-                      <option key={`tab${idx}`} value={idx} selected={selected}>
-                          {item.ref.id}
-                      </option>
+                        <option key={`tab${idx}`} value={idx} defaultValue={selected}>
+                            {item}
+                        </option>
                     )
                 }
             });
@@ -274,7 +277,7 @@ class Portfolio extends React.Component {
 
         return (
 
-            <Container className={'portfolio-view'}>
+            <Container className={'portfolio-view pb-5'}>
 
                 <Card className={'my-3'}>
                     <CardBody className={'p-2'}>
@@ -311,15 +314,7 @@ class Portfolio extends React.Component {
                     </CardBody>
                 </Card>
 
-                {/*<Row className={'mb-3'}>
-                    <Col>
-                        <Nav tabs className={'tab-section'}>
-                            {listItems}
-                        </Nav>
-                    </Col>
-                </Row>*/}
-
-                {!this.state.groupedPortfolio &&
+                {!groupedPortfolio &&
                 <Row>
                     <Col className={'text-center justify-content-center'}>
                         <Spinner size="xl" color="primary"/>
@@ -327,32 +322,68 @@ class Portfolio extends React.Component {
                 </Row>
                 }
 
-                {(this.state.groupedPortfolio && !this.state.gridView) &&
-                    <ListView groupedPortfolio={this.state.groupedPortfolio} selectedDate={this.state.begin} />
+                {(groupedPortfolio && !gridView) &&
+                    <ListView groupedPortfolio={groupedPortfolio} selectedDate={begin} />
                 }
 
-                {(this.state.groupedPortfolio && this.state.gridView) &&
-                    <GridView groupedPortfolio={this.state.groupedPortfolio} selectedDate={this.state.begin} />
+                {(groupedPortfolio && gridView) &&
+                    <GridView groupedPortfolio={groupedPortfolio} selectedDate={begin} />
                 }
 
 
                 <Card className={'my-3'}>
                     <CardBody className={'p-2'}>
                         <Row>
-                            <Col sm={'6'}>
-                              <FormGroup row>
-                                  <Label sm={2}>Fon Kodu: </Label>
-                                  <Col sm={7}>
-                                      <Input type="text" name="fundCode" placeholder="AFO / AFT"
-                                             onChange={this.handleInputChange.bind(this)} />
-                                  </Col>
-                                  <Col sm={3}>
-                                      <Button onClick={this.saveFund.bind(this)}>
-                                          <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
-                                          Kaydet
-                                      </Button>
-                                  </Col>
-                              </FormGroup>
+                            <Col sm={'8'}>
+                                <FormGroup row>
+                                    <Label sm={3}>Fon Kodu: </Label>
+                                    <Col sm={7}>
+                                        <Input type="text" name="fundCode" placeholder="AFO / AFT"
+                                               onChange={this.handleInputChange.bind(this)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label sm={3}>Tarih: </Label>
+                                    <Col sm={7}>
+                                        <Input type="date" name="purchaseDate" placeholder="02/19/2021"
+                                               onChange={this.handleInputChange.bind(this)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label sm={3}>Alış Fiyatı: </Label>
+                                    <Col sm={7}>
+                                        <Input type="number" name="purchasePrice" placeholder="AFO / AFT"
+                                               onChange={this.handleInputChange.bind(this)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Label sm={3}>Maliyet: </Label>
+                                    <Col sm={7}>
+                                        <Input type="number" name="cost" placeholder="AFO / AFT"
+                                               onChange={this.handleInputChange.bind(this)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={3}></Col>
+                                    <Col sm={3}>
+                                        <Button onClick={this.saveFund.bind(this)}>
+                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                            Kaydet
+                                        </Button>
+                                    </Col>
+                                </FormGroup>
+                                {
+                                    saveItemToPortfolio &&
+                                    <Alert color="success">
+                                        İşlem başarılı
+                                    </Alert>
+                                }
+                                {
+                                    saveItemToPortfolio === false &&
+                                    <Alert color="danger">
+                                        İşlem sırasında sorun oluştu.
+                                    </Alert>
+                                }
                             </Col>
                         </Row>
                     </CardBody>
