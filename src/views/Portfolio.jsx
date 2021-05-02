@@ -151,19 +151,14 @@ class Portfolio extends React.Component {
 
     prepareDate(setForm) {
         const d = setForm ? new Date() : new Date(this.state.begin)
-        const day = d.getDay();
+        let day = d.getDay();
+        d.setDate(day === 6 ? d.getDate() - 1 : day === 0 ? d.getDate() - 2 : d.getDate())
 
         const Y = d.getFullYear();
-        let D = d.getDate();
+        const D = d.getDate();
         let M = d.getMonth() + 1;
 
         M = +M < 10 ? `0${M}` : M;
-
-        D = (day === 6)
-            ? D - 1
-            : (day === 0)
-                ? D - 2
-                : D;
 
         return `${Y}-${M}-${D}`;
     }
