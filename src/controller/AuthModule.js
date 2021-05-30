@@ -1,8 +1,7 @@
 import firebase from "firebase";
 import store from "../store/store";
 import {setUser} from "../store/authActions";
-import {setList} from "../store/fundListActions";
-import {useHistory} from "react-router-dom";
+import {setAllFundsList} from "../store/fundListActions";
 import PortfolioModule from "./PortfolioModule";
 
 
@@ -26,16 +25,17 @@ export default class AuthModule {
 
                     this.portfolioModule.getPortfolios();
 
+                    // fund list
+                    // this.store.dispatch(setAllFundsList())
+                    await this.portfolioModule.getAllFundsList()
+
                     res(true)
 
                 })
                 .catch(error => {
                     // Handle Errors here.
                     const {code, message} = error;
-                    console.log(error);
-
-                    alert(code + " -- " + message);
-
+                    console.log(code, message)
                     this.setAuthentication(null);
                     res(false)
                 });
@@ -68,7 +68,8 @@ export default class AuthModule {
                 this.portfolioModule.getPortfolios();
 
                 // fund list
-                this.store.dispatch(setList())
+                // this.store.dispatch(setAllFundsList())
+                this.portfolioModule.getAllFundsList();
             }
         });
     }

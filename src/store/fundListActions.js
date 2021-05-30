@@ -1,10 +1,6 @@
-export const SET_LIST = "SET_LIST"
-export const GET_LIST = "GET_LIST"
+export const SET_ALL_FUNDS_LIST = "SET_ALL_FUNDS_LIST"
 
-export const setList = () => ({
-    type: SET_LIST
-})
-
-export const getList = () => ({
-    type: GET_LIST
+export const setAllFundsList = (allFunds) => ({
+    type: SET_ALL_FUNDS_LIST,
+    allFunds
 })

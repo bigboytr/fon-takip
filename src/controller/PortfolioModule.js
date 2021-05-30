@@ -1,12 +1,42 @@
 import firebase from "firebase";
 import store from "../store/store";
 import {setList} from "../store/portfolioActions";
-import {getUser} from "../store/authActions";
+import axios from "axios";
+import {setAllFundsList} from "../store/fundListActions";
 
 export default class PortfolioModule {
 
     constructor() {
         this.db = firebase.firestore();
+    }
+
+    async getAllFundsList() {
+        try {
+            const res = await axios({
+                method: "GET",
+                url: process.env.REACT_APP_PROXY_GATE + process.env.REACT_APP_FUND_LIST_EP,
+            })
+
+            store.dispatch(setAllFundsList(res.data))
+        }
+        catch (err) {
+            console.error(err);
+            return undefined
+        }
+    }
+
+    // Create new Portfolio
+    createPortfolio(title) {
+        const userId = store.getState().auth.user.uid;
+
+        this.db.collection(userId).doc('portfolio').set({
+            [title]: {
+                items: {},
+                summary: {}
+            }
+        }, {merge: true}).then(() => {
+            this.getPortfolios();
+        })
     }
 
     getPortfolios() {
@@ -16,7 +46,7 @@ export default class PortfolioModule {
         this.db.collection(userId).doc('portfolio').get().then(snap => {
             const keys = Object.keys(snap.data())
             if (keys)
-                store.dispatch(setList(keys))
+                store.dispatch(setList(keys.sort()))
 
         })
     }
@@ -37,30 +67,48 @@ export default class PortfolioModule {
         })
     }
 
-    /*
-    * code: "AFO",
-            purchaseDate: "16.07.2020",
-            purchasePrice: 0.089567,
-            cost: 999.93
-            * */
-    // Create new Portfolio
-    savePortfolio(title) {
-        const userId = store.getState().auth.user.uid;
+    // Update summary of fund
+    async updateFundSummary(portfolio, fundCode) {
+        const fundItems = await this.getFundDataObj(portfolio, fundCode)
 
-        this.db.collection(this.userId).doc(title).set({}).then(() => {
-            this.getPortfolios();
+        if (!fundItems) return
+
+        const totalCost = fundItems.reduce((total, item) => +total + +item.cost, []);
+        const totalQuantity = fundItems.reduce((total, item) => +total + (item.cost / item.purchasePrice), []);
+        const avgFundPrice = totalCost / totalQuantity
+
+        const userId = store.getState().auth.user.uid
+
+        const data = {
+            [portfolio]: {
+                items: {
+                    [fundCode]: {
+                       summary: {
+                           totalCost,
+                           totalQuantity,
+                           avgFundPrice
+                       }
+                    }
+                }
+            }
+        }
+        this.db.collection(userId).doc("portfolio").set(data, {merge: true}).then(() => {
+            return true
+        }).catch(err => {
+            console.log(err)
+            return false
         })
     }
 
-
     // Get selected portfolio data
+    // we need that while saving new fund to portfolio
     getFundDataObj(portfolio, funCode) {
 
         const userId = store.getState().auth.user.uid
 
         return this.db.collection(userId).doc('portfolio').get().then(snap => {
             const d = snap.data()
-            return d[portfolio][funCode]
+            return d[portfolio]['items'][funCode] ? d[portfolio]['items'][funCode]['buy'] : null
         })
     }
 
@@ -75,19 +123,23 @@ export default class PortfolioModule {
 
         const data = {
             [portfolio]: {
-                [fundCode]: [
-                    ...fundData,
-                    {
-                        purchaseDate: new Date(purchaseDate),
-                        purchasePrice: parseFloat(purchasePrice),
-                        cost: parseFloat(cost),
-                    },
-                ]
+                items: {
+                    [fundCode]: {
+                        buy: [
+                            ...fundData,
+                            {
+                                purchaseDate: new Date(purchaseDate),
+                                purchasePrice: parseFloat(purchasePrice),
+                                cost: parseFloat(cost),
+                            },
+                        ]
+                    }
+                }
             }
         }
 
-        return this.db.collection(userId).doc("portfolio").set(data, { merge: true }).then(function() {
-            return true
+        return this.db.collection(userId).doc("portfolio").set(data, { merge: true }).then(async () => {
+            return  await this.updateFundSummary(portfolio, fundCode)
         }).catch(err => {
             console.log(err)
             return false

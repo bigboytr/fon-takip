@@ -42,7 +42,8 @@ class Portfolio extends React.Component {
             purchaseDate: null,
             purchasePrice: null,
             cost: null,
-            saveItemToPortfolio: null
+            saveItemToPortfolio: null,
+            portfolioTitle: null
         }
     }
 
@@ -227,6 +228,11 @@ class Portfolio extends React.Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
+    handleCreatePortfolio() {
+        this.pm.createPortfolio(this.state.portfolioTitle)
+        //this.setState({title: null})
+    }
+
     saveFund() {
 
         this.setState({
@@ -249,12 +255,18 @@ class Portfolio extends React.Component {
         })
     }
 
+    calculate() {
+        const {list, portfolioId} = this.props;
+        const activePortfolioTitle = list[portfolioId];
+        this.pm.updateFundSummary(activePortfolioTitle, this.state.fundCode)
+    }
+
     render() {
 
-        const { list, portfolioId } = this.props;
+        const { list, portfolioId, allFunds } = this.props;
         const { saveItemToPortfolio, begin, groupedPortfolio, gridView } = this.state
 
-        let listOptions = null;
+        let listOptions, allFundOptions = null;
 
         if (list) {
 
@@ -270,6 +282,18 @@ class Portfolio extends React.Component {
             });
         }
 
+        if (allFunds) {
+
+            allFundOptions = allFunds.map((item, idx) => {
+                if (item) {
+                    return (
+                        <option key={`opt${idx}`} value={item.Kodu}>
+                            {item.Kodu} - {item.Adi}
+                        </option>
+                    )
+                }
+            });
+        }
         return (
 
             <Container className={'portfolio-view pb-5'}>
@@ -325,6 +349,30 @@ class Portfolio extends React.Component {
                     <GridView groupedPortfolio={groupedPortfolio} selectedDate={begin} />
                 }
 
+                <Card className={'my-3'}>
+                    <CardBody className={'p-2'}>
+                        <Row>
+                            <Col sm={'8'}>
+                                <FormGroup row>
+                                    <Label sm={3}>Portföy adı: </Label>
+                                    <Col sm={7}>
+                                        <Input type="text" name="portfolioTitle"
+                                               onChange={this.handleInputChange.bind(this)} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col sm={3}></Col>
+                                    <Col sm={3}>
+                                        <Button onClick={this.handleCreatePortfolio.bind(this)}>
+                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                            Oluştur
+                                        </Button>
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
 
                 <Card className={'my-3'}>
                     <CardBody className={'p-2'}>
@@ -333,8 +381,9 @@ class Portfolio extends React.Component {
                                 <FormGroup row>
                                     <Label sm={3}>Fon Kodu: </Label>
                                     <Col sm={7}>
-                                        <Input type="text" name="fundCode" placeholder="AFO / AFT"
-                                               onChange={this.handleInputChange.bind(this)} />
+                                        <Input type={"select"} name="fundCode" onChange={this.handleInputChange.bind(this)}>
+                                            {allFundOptions}
+                                        </Input>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -365,6 +414,10 @@ class Portfolio extends React.Component {
                                             <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
                                             Kaydet
                                         </Button>
+                                        <Button onClick={this.calculate.bind(this)}>
+                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                            Hesapla
+                                        </Button>
                                     </Col>
                                 </FormGroup>
                                 {
@@ -392,8 +445,8 @@ class Portfolio extends React.Component {
 function mapStateToProps(state) {
     return {
         portfolioId: state.portfolio.selectedPortfolio,
-        list: state.portfolio.list
-
+        list: state.portfolio.list,
+        allFunds: state.fundList.allFunds
     }
 }
 
