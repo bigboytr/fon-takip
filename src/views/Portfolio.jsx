@@ -11,7 +11,7 @@ import {
     Button,
     Alert,
     FormGroup, Label,
-    InputGroup, InputGroupAddon, ButtonGroup, Input,
+    InputGroup, InputGroupAddon, ButtonGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap'
 
 
@@ -43,7 +43,8 @@ class Portfolio extends React.Component {
             purchasePrice: null,
             cost: null,
             saveItemToPortfolio: null,
-            portfolioTitle: null
+            portfolioTitle: null,
+            modalPortfolio: false
         }
     }
 
@@ -156,10 +157,11 @@ class Portfolio extends React.Component {
         d.setDate(day === 6 ? d.getDate() - 1 : day === 0 ? d.getDate() - 2 : d.getDate())
 
         const Y = d.getFullYear();
-        const D = d.getDate();
+        let D = d.getDate();
         let M = d.getMonth() + 1;
 
         M = +M < 10 ? `0${M}` : M;
+        D = D < 10 ? `0${D}` : D;
 
         return `${Y}-${M}-${D}`;
     }
@@ -189,7 +191,7 @@ class Portfolio extends React.Component {
 
                     axios({
                         method: "GET",
-                        url: proxy+spk+params,
+                        url: proxy + spk + params,
                         data: {
                             code: codes.join(','),
                             begin: begin,
@@ -206,7 +208,7 @@ class Portfolio extends React.Component {
     }
 
     switchTemplate() {
-        this.setState({gridView : !this.state.gridView})
+        this.setState({gridView: !this.state.gridView})
     }
 
     handlePortfolioSelect(idx) {
@@ -231,6 +233,7 @@ class Portfolio extends React.Component {
     handleCreatePortfolio() {
         this.pm.createPortfolio(this.state.portfolioTitle)
         //this.setState({title: null})
+        this.setModalState('modalPortfolio', false)
     }
 
     saveFund() {
@@ -261,10 +264,15 @@ class Portfolio extends React.Component {
         this.pm.updateFundSummary(activePortfolioTitle, this.state.fundCode)
     }
 
+    setModalState(modalName, value) {
+        this.setState({
+            [modalName]: value
+        })
+    }
     render() {
 
-        const { list, portfolioId, allFunds } = this.props;
-        const { saveItemToPortfolio, begin, groupedPortfolio, gridView } = this.state
+        const {list, portfolioId, allFunds} = this.props;
+        const {saveItemToPortfolio, begin, groupedPortfolio, gridView, modalPortfolio} = this.state
 
         let listOptions, allFundOptions = null;
 
@@ -303,31 +311,43 @@ class Portfolio extends React.Component {
                         <Row>
                             <Col sm={'3'}>
                                 <InputGroup>
-                                    <InputGroupAddon addonType="prepend">
-                                        <input type="date" className={'form-control'} name={'begin'}
-                                               value={this.state.begin}
-                                               onChange={this.handleDateChange.bind(this)}/>
+
+                                    <input type="date" className={'form-control'} name={'begin'}
+                                           value={this.state.begin}
+                                           onChange={this.handleDateChange.bind(this)}/>
+
+                                    <InputGroupAddon addonType="append">
+                                        <button className="btn btn-primary"
+                                                onClick={this.componentDidMount.bind(this)}>
+                                            <FontAwesomeIcon icon={['fas', 'running']} className={'fa-fw'}/>
+                                        </button>
                                     </InputGroupAddon>
-                                    <button className="btn btn-primary"
-                                            onClick={this.componentDidMount.bind(this)}>
-                                        <FontAwesomeIcon icon={['fas', 'running']} className={'fa-fw'} />
-                                    </button>
                                 </InputGroup>
                             </Col>
                             <Col sm={2}>
-                                <Input type={"select"} onChange={this.handlePortfolioSelection.bind(this)}>
-                                    {listOptions}
-                                </Input>
+                                <InputGroup>
+                                    <Input type={"select"} onChange={this.handlePortfolioSelection.bind(this)}>
+                                        {listOptions}
+                                    </Input>
+                                    <InputGroupAddon addonType="append">
+                                        <button className="btn btn-success"
+                                                onClick={() => {
+                                                    this.setModalState('modalPortfolio', true)
+                                                }}>
+                                            <FontAwesomeIcon icon={['fas', 'plus']} className={'fa-fw'}/>
+                                        </button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                             </Col>
                             <Col sm={2}>
-                              <ButtonGroup>
-                                <Button onClick={this.switchTemplate.bind(this)}>
-                                    <FontAwesomeIcon icon={['fas', 'bars']} className={'fa-fw'} />
-                                </Button>
-                                <Button onClick={this.switchTemplate.bind(this)}>
-                                    <FontAwesomeIcon icon={['fas', 'th-large']} className={'fa-fw'} />
-                                </Button>
-                              </ButtonGroup>
+                                <ButtonGroup>
+                                    <Button onClick={this.switchTemplate.bind(this)}>
+                                        <FontAwesomeIcon icon={['fas', 'bars']} className={'fa-fw'}/>
+                                    </Button>
+                                    <Button onClick={this.switchTemplate.bind(this)}>
+                                        <FontAwesomeIcon icon={['fas', 'th-large']} className={'fa-fw'}/>
+                                    </Button>
+                                </ButtonGroup>
                             </Col>
                         </Row>
                     </CardBody>
@@ -342,37 +362,34 @@ class Portfolio extends React.Component {
                 }
 
                 {(groupedPortfolio && !gridView) &&
-                    <ListView groupedPortfolio={groupedPortfolio} selectedDate={begin} />
+                <ListView groupedPortfolio={groupedPortfolio} selectedDate={begin}/>
                 }
 
                 {(groupedPortfolio && gridView) &&
-                    <GridView groupedPortfolio={groupedPortfolio} selectedDate={begin} />
+                <GridView groupedPortfolio={groupedPortfolio} selectedDate={begin}/>
                 }
 
-                <Card className={'my-3'}>
-                    <CardBody className={'p-2'}>
-                        <Row>
-                            <Col sm={'8'}>
-                                <FormGroup row>
-                                    <Label sm={3}>Portföy adı: </Label>
-                                    <Col sm={7}>
-                                        <Input type="text" name="portfolioTitle"
-                                               onChange={this.handleInputChange.bind(this)} />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col sm={3}></Col>
-                                    <Col sm={3}>
-                                        <Button onClick={this.handleCreatePortfolio.bind(this)}>
-                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
-                                            Oluştur
-                                        </Button>
-                                    </Col>
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                    </CardBody>
-                </Card>
+                <Modal isOpen={modalPortfolio}>
+                    <ModalHeader>Portföy Oluştur</ModalHeader>
+                    <ModalBody>
+                        <h3>Yeni bir portföy oluşturun</h3>
+                        <h6 className={'text-muted mb-4'}>Oluşturulan portföy ile eklediğiniz fonların takibini yapabilirsiniz.</h6>
+                        <p>
+                            <Input type="text" name="portfolioTitle"
+                                   placeHolder={'Portföy başlığı'}
+                                   onChange={this.handleInputChange.bind(this)}/>
+                        </p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="success" onClick={this.handleCreatePortfolio.bind(this)}>
+                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'}/>
+                            Oluştur
+                        </Button>{' '}
+                        <Button color="danger" onClick={() => {
+                            this.setModalState('modalPortfolio', false)
+                        }}>Vazgeç !</Button>
+                    </ModalFooter>
+                </Modal>
 
                 <Card className={'my-3'}>
                     <CardBody className={'p-2'}>
@@ -381,7 +398,8 @@ class Portfolio extends React.Component {
                                 <FormGroup row>
                                     <Label sm={3}>Fon Kodu: </Label>
                                     <Col sm={7}>
-                                        <Input type={"select"} name="fundCode" onChange={this.handleInputChange.bind(this)}>
+                                        <Input type={"select"} name="fundCode"
+                                               onChange={this.handleInputChange.bind(this)}>
                                             {allFundOptions}
                                         </Input>
                                     </Col>
@@ -390,32 +408,32 @@ class Portfolio extends React.Component {
                                     <Label sm={3}>Tarih: </Label>
                                     <Col sm={7}>
                                         <Input type="date" name="purchaseDate" placeholder="02/19/2021"
-                                               onChange={this.handleInputChange.bind(this)} />
+                                               onChange={this.handleInputChange.bind(this)}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label sm={3}>Alış Fiyatı: </Label>
                                     <Col sm={7}>
                                         <Input type="number" name="purchasePrice" placeholder="AFO / AFT"
-                                               onChange={this.handleInputChange.bind(this)} />
+                                               onChange={this.handleInputChange.bind(this)}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label sm={3}>Maliyet: </Label>
                                     <Col sm={7}>
                                         <Input type="number" name="cost" placeholder="AFO / AFT"
-                                               onChange={this.handleInputChange.bind(this)} />
+                                               onChange={this.handleInputChange.bind(this)}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Col sm={3}></Col>
                                     <Col sm={3}>
                                         <Button onClick={this.saveFund.bind(this)}>
-                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'}/>
                                             Kaydet
                                         </Button>
                                         <Button onClick={this.calculate.bind(this)}>
-                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'} />
+                                            <FontAwesomeIcon icon={['fas', 'check']} className={'fa-fw'}/>
                                             Hesapla
                                         </Button>
                                     </Col>
@@ -452,8 +470,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setSelectedPortfolio: (id) => {dispatch(setSelectedPortfolio(id))},
-        setSelectedPortfolioText: (value) => {dispatch(setSelectedPortfolioText(value))}
+        setSelectedPortfolio: (id) => {
+            dispatch(setSelectedPortfolio(id))
+        },
+        setSelectedPortfolioText: (value) => {
+            dispatch(setSelectedPortfolioText(value))
+        }
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio)
