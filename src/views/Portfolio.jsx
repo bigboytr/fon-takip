@@ -376,7 +376,7 @@ class Portfolio extends React.Component {
                         <h6 className={'text-muted mb-4'}>Oluşturulan portföy ile eklediğiniz fonların takibini yapabilirsiniz.</h6>
                         <p>
                             <Input type="text" name="portfolioTitle"
-                                   placeHolder={'Portföy başlığı'}
+                                   placeholder={'Portföy başlığı'}
                                    onChange={this.handleInputChange.bind(this)}/>
                         </p>
                     </ModalBody>
