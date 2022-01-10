@@ -13,7 +13,6 @@
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "firebase": "^7.15.5",
-    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
@@ -46,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "ftp-deploy": "^2.3.7"
+    "ftp-deploy": "^2.3.7",
+    "sass": "^1.47.0"
   }
 }
