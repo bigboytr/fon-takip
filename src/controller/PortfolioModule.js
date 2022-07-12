@@ -12,12 +12,13 @@ export default class PortfolioModule {
 
     async getAllFundsList() {
         try {
-            const res = await axios({
-                method: "GET",
-                url: process.env.REACT_APP_PROXY_GATE + process.env.REACT_APP_FUND_LIST_EP,
-            })
+            // const res = await axios({
+            //     method: "GET",
+            //     url: process.env.REACT_APP_PROXY_GATE + process.env.REACT_APP_FUND_LIST_EP,
+            // })
 
-            store.dispatch(setAllFundsList(res.data))
+            store.dispatch(setAllFundsList([]))
+            //store.dispatch(setAllFundsList(res.data))
         }
         catch (err) {
             console.error(err);

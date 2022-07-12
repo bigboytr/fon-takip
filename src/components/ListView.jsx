@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardBody, CardTitle, CardHeader, Col, Row, Table, Container, TabContent, TabPane} from "reactstrap";
+import {Card, CardBody, CardTitle, Col, Row, Table, TabContent, TabPane} from "reactstrap";
 import ArrowIcon from "./ArrowIcon";
 import BigNumbers from "./BigNumbers";
 import {connect} from "react-redux";

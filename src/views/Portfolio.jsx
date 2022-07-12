@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux';
-
 import {
     Container,
     Row,
@@ -19,7 +18,7 @@ import data from '../database.json'
 import ListView from '../components/ListView'
 import GridView from '../components/GridView'
 
-import axios from "axios";
+// import axios from "axios";
 import {setSelectedPortfolio, setSelectedPortfolioText} from "../store/portfolioActions";
 import PortfolioModule from "../controller/PortfolioModule";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -173,7 +172,7 @@ class Portfolio extends React.Component {
 
                 //res(spk)
 
-                const codes = this.portfolio.map(p => {
+                /*const codes = this.portfolio.map(p => {
                     return p.items.map(item => {
                         return item.code
                     });
@@ -202,7 +201,8 @@ class Portfolio extends React.Component {
                         res(resp.data);
                     })
 
-                }, 200)
+                }, 200)*/
+                res(0)
             }
         })
     }
